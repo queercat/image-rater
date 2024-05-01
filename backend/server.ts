@@ -50,7 +50,7 @@ app.get("/api/image/:name", (req, res) => {
   res.send(dataToSend[0]); // sending back just <Images> instead of Array<Images>
 })
 
-app.get("/api/images/", (req, res) => {
+app.get("/api/images/", async (req, res) => {
   const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
   res.send(data);
 })

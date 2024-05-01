@@ -1,0 +1,11 @@
+{
+  "name": "image-rater",
+  "version": "0.0.0",
+  "description": "App for users to show off and upload images.",
+  "scripts": {
+    "fullstack": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
