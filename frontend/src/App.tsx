@@ -1,5 +1,4 @@
 import {ImageWithRating} from "./components/ImageWithRating/ImageWithRating.tsx";
-import {MockedImageData} from "./mocked/Mocked.ts";
 import {useGetImages} from "./hooks/useGetImages.tsx";
 import {LoadingScreen} from "./components/LoadingScreen/LoadingScreen.tsx";
 
@@ -8,6 +7,6 @@ export const App = () => {
 
     return <>
         <LoadingScreen show={loading} />
-        <ImageWithRating data={`data:text/plain;base64,${MockedImageData}`} rating={4} />
+        <ImageWithRating data={`data:text/plain;base64,${imagesData?.data}`} rating={imagesData?.rating.reduce((a, b) => a + b, 0) ?? 0} />
     </>
 }

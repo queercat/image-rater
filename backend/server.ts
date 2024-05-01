@@ -11,6 +11,7 @@ type Images = {
 const app = express()
 const port = 3000;
 
+app.use(cors())
 app.use(express.json());
 
 app.post("/api/image", (req, res) => {
@@ -44,6 +45,7 @@ app.get("/api/image/:name", (req, res) => {
   const dataToSend = data.filter(d => {
     return d.name === userData;
   })
+
   if(dataToSend.length === 0) res.status(404).send("The searched name doesn't exist")
   res.send(dataToSend[0]); // sending back just <Images> instead of Array<Images>
 })
