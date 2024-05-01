@@ -26,7 +26,7 @@ app.post("/api/image", (req, res) => {
   res.send(newData)
 })
 
-app.put("/api/image:name", (req, res) => {
+app.put("/api/image:name", (req, res) => { // Still need to add the 404 error for this one
   const data = JSON.parse(fs.readFileSync("/images.json", "utf-8")) as Array<Images>
   const newData = req.body
   const userData = req.params.name 
@@ -35,7 +35,18 @@ app.put("/api/image:name", (req, res) => {
     return d;
   })
   fs.writeFileSync("/images.json", JSON.stringify(updatedData))
-  res.send()
+  res.send();
 })
+
+app.get("/api/image:name", (req, res) => {
+  const data = JSON.parse(fs.readFileSync("/images.json", "utf-8")) as Array<Images>
+  const userData = req.params.name;
+  const dataToSend = data.filter(d => {
+    return d.name === userData;
+  })
+  if(dataToSend.length === 0) res.status(404).send("The searched name doesn't exist")
+  res.send(dataToSend[0]); // sending back just <Images> instead of Array<Images>
+})
+
 
 app.listen(port)
