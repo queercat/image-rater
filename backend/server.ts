@@ -2,10 +2,10 @@ import express from "express"
 import fs from "fs"
 import cors from "cors"
 
-type Images = {
+type Image = {
   data: string,
   name: string,
-  rating: []
+  rating: number[]
 }
 
 const app = express()
@@ -15,8 +15,8 @@ app.use(cors())
 app.use(express.json());
 
 app.post("/api/image", (req, res) => {
-  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
-  const newData = req.body as Images
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Image>
+  const newData = req.body as Image
   data.map(d => {
     if(d.name === newData.name) {
       res.status(400).send("name already exists") // I believe this will break out of the loop otherwise i will add a break
@@ -28,7 +28,7 @@ app.post("/api/image", (req, res) => {
 })
 
 app.put("/api/image/:name", (req, res) => { // Still need to add the 404 error for this one
-  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Image>
   const newData = req.body
   const userData = req.params.name 
   const updatedData = data.map(d => {
@@ -40,7 +40,7 @@ app.put("/api/image/:name", (req, res) => { // Still need to add the 404 error f
 })
 
 app.get("/api/image/:name", (req, res) => {
-  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Image>
   const userData = req.params.name;
   const dataToSend = data.filter(d => {
     return d.name === userData;
@@ -51,20 +51,25 @@ app.get("/api/image/:name", (req, res) => {
 })
 
 app.get("/api/images/", async (req, res) => {
-  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Image>
   res.send(data);
 })
 
-app.post("/api/image/:name/rank", (req, res) => {
-  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
-  const newData = req.body as Images
-  data.map(d => {
-    if(d.name === newData.name) d.rating = newData.rating; // right now this just takes the new ranking it is being given and sets the old one to that
-    return;
-    // if(d.name === newData.name) d.rating.push(newData.rating[0])      // wasnt working how i wanted it to
+app.post("/api/image/:name/:rank", (req, res) => {
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Image>
+
+  const name = req.params.name;
+  const rank = parseInt(req.params.rank)
+
+  data.forEach(d => {
+    if (d.name === name) {
+      d.rating.push(rank)
+    }
   })
+
   fs.writeFileSync("/images.json", JSON.stringify(data))
-  res.send(data)
+
+  res.send()
 })
 
 app.listen(port)
