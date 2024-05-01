@@ -67,7 +67,22 @@ app.post("/api/image/:name/:rank", (req, res) => {
     }
   })
 
-  fs.writeFileSync("/images.json", JSON.stringify(data))
+  fs.writeFileSync("./images.json", JSON.stringify(data))
+
+  res.send()
+})
+
+app.delete("/api/image/:name", (req, res) => {
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Image>
+  const name = req.params.name;
+
+  const updatedData = data.map(d => {
+    if (d.name === name) return
+
+    return d
+  }).filter(d => d !== undefined)
+
+  fs.writeFileSync("./images.json", JSON.stringify(updatedData))
 
   res.send()
 })

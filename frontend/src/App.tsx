@@ -21,7 +21,7 @@ export const App = () => {
         <LoadingScreen show={loading} />
         <div className={"grid grid-cols-3 grid-rows-3 gap-4 p-4"}>
             {imagesData?.map((image) => (
-                <ImageWithRating key={image.name} data={`data:text/plain;base64,${image.data}`} rating={averageValues(image.rating)} />
+                <ImageWithRating key={image.name} name={image.name} data={`data:text/plain;base64,${image.data}`} rating={averageValues(image.rating)} />
             ))}
         </div>
     </>
