@@ -55,4 +55,15 @@ app.get("/api/image/", (req, res) => {
   res.send(data);
 })
 
+app.post("/api/image/:name/rank", (req, res) => {
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
+  const newData = req.body as Images
+  data.map(d => {
+    if(d.name === newData.name) d.rating = newData.rating;
+    return;
+  })
+  fs.writeFileSync("/images.json", JSON.stringify(data))
+  res.send(data)
+})
+
 app.listen(port)
