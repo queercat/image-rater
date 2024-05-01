@@ -14,7 +14,7 @@ const port = 3000;
 app.use(express.json());
 
 app.post("/api/image", (req, res) => {
-  const data = JSON.parse(fs.readFileSync("/images.json", "utf-8")) as Array<Images>
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
   const newData = req.body as Images
   data.map(d => {
     if(d.name === newData.name) {
@@ -26,8 +26,8 @@ app.post("/api/image", (req, res) => {
   res.send(newData)
 })
 
-app.put("/api/image:name", (req, res) => { // Still need to add the 404 error for this one
-  const data = JSON.parse(fs.readFileSync("/images.json", "utf-8")) as Array<Images>
+app.put("/api/image/:name", (req, res) => { // Still need to add the 404 error for this one
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
   const newData = req.body
   const userData = req.params.name 
   const updatedData = data.map(d => {
@@ -38,8 +38,8 @@ app.put("/api/image:name", (req, res) => { // Still need to add the 404 error fo
   res.send();
 })
 
-app.get("/api/image:name", (req, res) => {
-  const data = JSON.parse(fs.readFileSync("/images.json", "utf-8")) as Array<Images>
+app.get("/api/image/:name", (req, res) => {
+  const data = JSON.parse(fs.readFileSync("./images.json", "utf-8")) as Array<Images>
   const userData = req.params.name;
   const dataToSend = data.filter(d => {
     return d.name === userData;
